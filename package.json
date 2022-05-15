@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc -b",
-    "prepack": "rm -rf dist && npm build",
+    "publish": "./node_modules/.bin/subql publish",
+    "prepack": "rm -rf dist && npm run build",
     "test": "jest",
     "codegen": "./node_modules/.bin/subql codegen",
     "start:docker": "docker-compose pull && docker-compose up --remove-orphans"
