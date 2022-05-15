@@ -1,0 +1,48 @@
+specVersion: 1.0.0
+name: avalanche-subql-starter
+version: 0.0.1
+runner:
+  node:
+    name: '@subql/node-avalanche'
+    version: 0.0.5-3
+  query:
+    name: '@subql/query'
+    version: '*'
+description: >-
+  This project can be use as a starting point for developing your new Avalanche
+  SubQuery project
+repository: 'https://github.com/subquery/avalanche-subql-starter'
+schema:
+  file: ./schema.graphql
+network:
+  endpoint: 'https://api.avax.network/ext/bc/C/rpc'
+  port: 9650
+  chainId: mainnet
+  type: avalanche
+  chainName: C
+dataSources:
+  - kind: avalanche/Runtime
+    startBlock: 12454857
+    options:
+      abi: erc20
+      address: '0x60781C2586D68229fde47564546784ab3fACA982'
+    assets:
+      erc20:
+        file: >-
+          ./node_modules/@pangolindex/exchange-contracts/artifacts/contracts/pangolin-core/interfaces/IPangolinERC20.sol/IPangolinERC20.json
+    mapping:
+      file: ./dist/index.js
+      handlers:
+        - handler: handleBlock
+          kind: avalanche/BlockHandler
+        - handler: handleEvent
+          kind: avalanche/EventHandler
+          filter:
+            topics:
+              - >-
+                Transfer(address indexed from, address indexed to, uint256
+                amount)
+        - handler: handleTransaction
+          kind: avalanche/TransactionHandler
+          filter:
+            function: 'approve(address spender, uint256 rawAmount)'
